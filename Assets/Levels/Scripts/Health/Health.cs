@@ -12,11 +12,12 @@ public class Health : MonoBehaviour
     [SerializeField] GameObject boss;
 
     public float currentHealth { get; private set; }
+    public int healLimit { get; private set; }
 
     private Animator animator;
     private bool dead;
     private AudioSource bossMusic;
-    private int healLimit;
+    //private int healLimit;
 
     private void Awake()
     {
