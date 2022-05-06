@@ -5,6 +5,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private float startingHealth;
     [SerializeField] AudioSource hitEffect;
+    [SerializeField] AudioSource potionEffect;
 
     [Header("Player and Boss Only")]
     [SerializeField] private GameObject gameOverPanel;
@@ -105,10 +106,11 @@ public class Health : MonoBehaviour
     }
     private void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.K)) && healLimit < 1)
+        if ((Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.K)) && healLimit < 1 && GetComponent<PlayerMovement>() != null)
         {
             if (currentHealth < 7)
             {
+                potionEffect.Play();
                 PlusHealth();
                 healLimit++;
             } 
