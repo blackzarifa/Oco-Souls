@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
     //public static Vector2 lastCheckPointPos = new Vector2(130f, -121f);
 
     private float cooldownTimer = Mathf.Infinity;
+    private float idleCounter = 0.0f;
 
     private Rigidbody2D body;
     private Animator anim;
@@ -38,7 +39,15 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
     private void Update()
     {
         HorizontalMove();
-
+        
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle")) {
+            idleCounter += Time.deltaTime;
+        } else
+        {
+            idleCounter = 0.0f;
+        }
+        //Debug.Log(idleCounter);
+        
         if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && isGrounded()) Jump();
         else if ((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.J)) && isGrounded()) Attack();
 
@@ -56,6 +65,7 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
         else if (horizontalInput < -0.01f) transform.localScale = new Vector3(-10, 10, 10);
 
         anim.SetBool("run", horizontalInput != 0);
+
     }
 
     private void Jump ()

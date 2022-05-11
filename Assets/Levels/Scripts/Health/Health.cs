@@ -18,7 +18,6 @@ public class Health : MonoBehaviour
     private Animator animator;
     private bool dead;
     private AudioSource bossMusic;
-    //private int healLimit;
 
     private void Awake()
     {
