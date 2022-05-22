@@ -22,16 +22,20 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
 
     private float cooldownTimer = Mathf.Infinity;
     private float idleCounter = 0.0f;
+    private int idleCooldown = 20;
 
     private Rigidbody2D body;
     private Animator anim;
     private CapsuleCollider2D capsuleCollider;
+    private Health health;
+    
     private void Awake()
     {
         // Interage com o codigo do Unity diretamente
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
+        health = GetComponent<Health>();
 
         GameObject.FindGameObjectWithTag("Player").transform.position = lastCheckPointPos;
     }
@@ -45,8 +49,14 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
         } else
         {
             idleCounter = 0.0f;
+            idleCooldown = 20;
         }
-        //Debug.Log(idleCounter);
+        Debug.Log(idleCounter);
+
+        if (idleCounter >= idleCooldown) {
+            health.TakeDamage(2);
+            idleCooldown += 5;
+        }
         
         if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && isGrounded()) Jump();
         else if ((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.J)) && isGrounded()) Attack();
