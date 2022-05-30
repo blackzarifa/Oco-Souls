@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour, ICollisionHandler
 {
+    [Header("Player Options")]
     public float speed;
     [SerializeField] private float attackCooldown;
     [SerializeField] private int damage;
@@ -13,16 +14,22 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
     [SerializeField] Transform attackPoint;
     [SerializeField] float attackRange = 0.5f;
     [SerializeField] LayerMask enemyLayers;
+
     [Header("Sound Effects")]
     [SerializeField] AudioSource footstep;
     [SerializeField] AudioSource slash;
 
-    public static Vector2 lastCheckPointPos = new Vector2(-7.517738f, -88.60466f);
-    //public static Vector2 lastCheckPointPos = new Vector2(130f, -121f);
+    [Header("Idle Punish")]
+    [SerializeField] RectTransform idleCanvas1;
+    [SerializeField] RectTransform idleCanvas2;
+    [SerializeField] RectTransform idleCanvasRed;
+
+    public static Vector2 lastCheckPointPos = new Vector2(-7.517738f, -88.60466f);  // Correct spawn
+    //public static Vector2 lastCheckPointPos = new Vector2(130f, -121f);           // Test spawn
 
     private float cooldownTimer = Mathf.Infinity;
     private float idleCounter = 0.0f;
-    private int idleCooldown = 20;
+    private int idleCooldown = 10;
 
     private Rigidbody2D body;
     private Animator anim;
@@ -49,15 +56,25 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
         } else
         {
             idleCounter = 0.0f;
-            idleCooldown = 20;
+            idleCooldown = 10;
         }
         Debug.Log(idleCounter);
 
         if (idleCounter >= idleCooldown) {
+            IdleDamageBlink();
             health.TakeDamage(2);
             idleCooldown += 5;
         }
         
+        if ((idleCanvas1.gameObject.activeSelf == false) && (idleCounter >= 7)) {
+            IdleAnimation();
+        }
+
+        if ((idleCanvas1.gameObject.activeSelf == true) && (idleCounter <= 1))
+        {
+            RemoveIdleCanvas();
+        }
+
         if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && isGrounded()) Jump();
         else if ((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.J)) && isGrounded()) Attack();
 
@@ -128,6 +145,27 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
         slash.Play();
     }
 
+    private void IdleAnimation() {
+        idleCanvas1.gameObject.SetActive(true);
+        LeanTween.alpha(idleCanvas1, 0, 0);
+        idleCanvas2.gameObject.SetActive(true);
+        LeanTween.alpha(idleCanvas2, 0, 0);
+
+        LeanTween.alpha(idleCanvas1, 0.4f, 2f);
+        LeanTween.alpha(idleCanvas2, 0.7f, 2f);
+    }
+
+    private void RemoveIdleCanvas() {
+        idleCanvas1.gameObject.SetActive(false);
+        idleCanvas2.gameObject.SetActive(false);
+    }
+
+    private void IdleDamageBlink() {
+        idleCanvasRed.gameObject.SetActive(true);
+        LeanTween.alpha(idleCanvasRed, 0, 0);
+        LeanTween.alpha(idleCanvasRed, 0.7f, 0.15f).setOnComplete(() => { idleCanvasRed.gameObject.SetActive(false); });
+    }
+    
     public void CollisionEnter(string colliderName, GameObject other)
     {
         if (colliderName == "KnifeHitBox" && other.tag == "Enemy")
