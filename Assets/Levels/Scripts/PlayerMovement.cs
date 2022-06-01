@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
             idleCounter = 0.0f;
             idleCooldown = 10;
         }
-        Debug.Log(idleCounter);
+        //Debug.Log(idleCounter);
 
         if (idleCounter >= idleCooldown) {
             IdleDamageBlink();
