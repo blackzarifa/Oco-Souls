@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
     [SerializeField] RectTransform idleCanvasRed;
 
     public static Vector2 lastCheckPointPos = new Vector2(-7.517738f, -88.60466f);  // Correct spawn
-    //public static Vector2 lastCheckPointPos = new Vector2(130f, -121f);           // Test spawn
+    //public static Vector2 lastCheckPointPos = new Vector2(257f, -127f);           // Test spawn
 
     private float cooldownTimer = Mathf.Infinity;
     private float idleCounter = 0.0f;
@@ -51,7 +51,7 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
     {
         HorizontalMove();
         
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle")) {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Idle") && !health.boss.activeSelf) {
             idleCounter += Time.deltaTime;
         } else
         {

@@ -10,7 +10,7 @@ public class Health : MonoBehaviour
     [Header("Player and Boss Only")]
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] RectTransform fader;
-    [SerializeField] GameObject boss;
+    public GameObject boss;
 
     public float currentHealth { get; private set; }
     public int healLimit { get; private set; }
