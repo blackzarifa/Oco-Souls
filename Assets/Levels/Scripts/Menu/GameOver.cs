@@ -15,6 +15,8 @@ public class GameOver : MonoBehaviour
 
     public void QuitGame()
     {
+        PlayerPrefs.DeleteAll();
+        
         fader.gameObject.SetActive(true);
 
         LeanTween.alpha(fader, 0, 0);

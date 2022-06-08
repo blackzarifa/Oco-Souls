@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
+        PlayerPrefs.DeleteAll();
         DontDestroyOnLoad(eventSystem);
     }
 
@@ -27,6 +28,7 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame ()
     {
+        PlayerPrefs.DeleteAll();
         Application.Quit();
     }
 }

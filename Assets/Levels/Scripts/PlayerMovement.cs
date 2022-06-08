@@ -24,17 +24,22 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
     [SerializeField] RectTransform idleCanvas2;
     [SerializeField] RectTransform idleCanvasRed;
 
+    [Header("Run Counter")]
+    [SerializeField] GameObject gameOverScreen;
+
     public static Vector2 lastCheckPointPos = new Vector2(-7.517738f, -88.60466f);  // Correct spawn
     //public static Vector2 lastCheckPointPos = new Vector2(257f, -127f);           // Test spawn
 
     private float cooldownTimer = Mathf.Infinity;
     private float idleCounter = 0.0f;
     private int idleCooldown = 10;
+    private float maxTime;
 
     private Rigidbody2D body;
     private Animator anim;
     private CapsuleCollider2D capsuleCollider;
     private Health health;
+    private RunCounter runCounter;
     
     private void Awake()
     {
@@ -43,6 +48,8 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
         anim = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         health = GetComponent<Health>();
+        runCounter = GetComponent<RunCounter>();
+        maxTime = PlayerPrefs.GetFloat("PreviousCounter");
 
         GameObject.FindGameObjectWithTag("Player").transform.position = lastCheckPointPos;
     }
@@ -73,6 +80,12 @@ public class PlayerMovement : MonoBehaviour, ICollisionHandler
         if ((idleCanvas1.gameObject.activeSelf == true) && (idleCounter <= 1))
         {
             RemoveIdleCanvas();
+        }
+
+        if (maxTime > 0 && runCounter.counter >= maxTime && !gameOverScreen.activeSelf)
+        {
+            IdleDamageBlink();
+            health.TakeDamage(10);
         }
 
         if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) && isGrounded()) Jump();
