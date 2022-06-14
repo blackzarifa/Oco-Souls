@@ -40,6 +40,15 @@ O herói é o criador e cozinheiro do milagroso OCO que tem a habilidade de cura
 - Na parte final do mapa será encontrado o boss.
 - Ao derrotar o boss acaba a fase.
 
+## Features Especiais
+
+- Para evitar que o jogador fique AFK, quando o mesmo ficar parado por mais de 10 segundos a tela ficará escura e o personagem vai continuamente tomar dano até morrer.
+- Após completar a fase e derrotar o boss principal o player tem 2 opções, a primeira é apenas sair do jogo, a segunda opção é de recomeçar o jogo no modo *speedrun* tentando simular uma experiência de arcade.
+    - No modo speedrun aparecerá um contador em baixo da barra de vida do jogador.
+    - O contador representa inicialmente quanto tempo (em segundos) o jogador demorou para completar o jogo pela primeira vez.
+    - O contador é reduzido com o passar do tempo e quando chega em 0 o personagem perde toda sua vida restante e morre.
+    - Se o jogador morrer no modo speedrun não é possível dar respawn e a única opção será a de sair do jogo e tentar novamente no modo normal.
+
 ---
 
 # Personagens
@@ -112,6 +121,8 @@ Na primeira fase o herói ira enfrentar uma serie de inimigos para fugir da masm
 
 - Vida no canto superior esquerdo da tela
 - Vida do boss na área inferior durante a boss fight.
+- No canto superior direito aparece, se disponível, a poção que o jogador pode usar para recuperar vida.
+- Abaixo da vida do player, no modo *speedrun*, aparece em o tempo restante para terminar a fase em segundos.
 
 ---
 
